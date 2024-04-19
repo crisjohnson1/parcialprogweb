@@ -30,6 +30,9 @@
     .guardarBtn, .anularBtn {
         display: none;
     }
+    .confirmacion {
+        display: none;
+    }
 </style>
 </head>
 <body>
@@ -64,6 +67,10 @@
     </tr>
 </table>
 
+<div class="confirmacion">
+    <p>Pulse: Aceptar para guardar los cambios o cancelar para anularlos</p>
+</div>
+
 <button class="guardarBtn" onclick="guardarCambios()">Guardar Cambios</button>
 <button class="anularBtn" onclick="anularCambios()">Anular Cambios</button>
 
@@ -90,7 +97,7 @@ function agregarGusto() {
     inputPorcentaje.min = "0";
     inputPorcentaje.max = "100";
     inputPorcentaje.placeholder = "0-100";
-    inputPorcentaje.style.width = "60px";
+    inputPorcentaje.style.width = "60px"; 
     celdaPorcentaje.appendChild(inputPorcentaje);
 
     var editarBtn = document.createElement("button");
@@ -101,7 +108,7 @@ function agregarGusto() {
     };
     celdaEditar.appendChild(editarBtn);
 
-    
+
     cambiosPendientes.push({fila: fila, gusto: gusto, inputPorcentaje: inputPorcentaje});
 }
 
@@ -131,10 +138,13 @@ function editarFila(fila) {
     var anularBtn = document.querySelector(".anularBtn");
     guardarBtn.style.display = "inline-block";
     anularBtn.style.display = "inline-block";
+
+    
+    document.querySelector(".confirmacion").style.display = "block";
 }
 
 function guardarCambios() {
-    
+   
     cambiosPendientes.forEach(function(cambio) {
         cambio.fila.cells[0].innerHTML = cambio.fila.cells[0].querySelector("input").value;
         var porcentaje = cambio.fila.cells[1].querySelector("input").value + "%";
@@ -148,10 +158,12 @@ function guardarCambios() {
     });
     cambiosPendientes = [];
     ocultarBotones();
+   
+    document.querySelector(".confirmacion").style.display = "none";
 }
 
 function anularCambios() {
-    
+   
     cambiosPendientes.forEach(function(cambio) {
         var inputGusto = cambio.fila.cells[0].querySelector("input");
         var inputPorcentaje = cambio.fila.cells[1].querySelector("input");
@@ -161,11 +173,13 @@ function anularCambios() {
     cambiosPendientes.forEach(function(cambio) {
         var editarBtn = cambio.fila.cells[2].querySelector(".editarBtn");
         editarBtn.innerHTML = "Editar";
-        editarBtn.classList.remove("enEdicion");
+        editarBtn.classList.remove("enEdicion"); 
         editarBtn.disabled = false;
     });
     cambiosPendientes = [];
     ocultarBotones();
+ 
+    document.querySelector(".confirmacion").style.display = "none";
 }
 
 function ocultarBotones() {
