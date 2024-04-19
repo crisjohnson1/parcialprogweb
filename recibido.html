@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Información Recibida</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        width: 100%;
+    }
+    h1 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+    .info {
+        text-align: left;
+        margin-bottom: 20px;
+    }
+    .info p {
+        margin: 10px 0;
+    }
+    .nombre {
+        font-weight: bold;
+    }
+    .email {
+        color: blue;
+    }
+    .telefono {
+        color: aquamarine;
+    }
+    .gusto {
+        color: green;
+    }
+    .porcentaje {
+        color: red;
+    }
+    .usuario {
+        width: 24px;
+        vertical-align: middle;
+        margin-right: 5px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Información Recibida</h1>
+    <div class="info">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAVtJREFUSEvt1b9LHFEUxfHPNsFYJwga0ZDYSyoLjWIjdgoSQv6BoGUIqU0t+dHYpE0hNopiJQiCWotCutgFTGNqTUAzD97C+JjZmVW221cNM+ed773nXpiGDp9Gh/11AZUJl0X0GJ8xGx128A5/Kh0TQRGgFyd4nmh/4AX+tgMpArzGWonJHLbuC3iPlRKT8O1TC0Af3uBLU1PUwTw27tDBAA4xjLf4FjyKAD04xUgCCXMZw2UBPJgfYQg/MYHfZYDwPmzR17hF19lwtxHiyW/RB3zHAxxgMJq/zDo4bxVRnRkuZUWs4gwPszj64/N4s/JWgAUsYjoh7UXTTTzBftbBs6gJoCn8SqtLZxC2J0TR6ixns/sYISGaEOFkkXk6g1dYr5MPZrCLp/hXZp4CjjFaExDMA6Ty5CO6ihtReQkXeFRHmAfc1LmQ09T6l9QStQm+Je8CKtPreET/ARiyNRlauk5oAAAAAElFTkSuQmCC" alt="Imagen de Usuario" class="usuario">
+        <p><span class="nombre">Nombre:</span> <strong id="nombre"></strong></p>
+        <p><span class="email">Email:</span> <span id="email"></span></p>
+        <p><span class="telefono">Teléfono:</span> <span id="telefono"></span></p>
+    </div>
+    <div id="gustosPorcentajes" class="info">
+        <!-- Los gustos y porcentajes se mostrarán aquí -->
+    </div>
+</div>
+
+<script>
+// Función para obtener los parámetros de la URL
+function obtenerParametrosUrl() {
+    var parametros = {};
+    var url = window.location.href;
+    var partes = url.split("?")[1].split("&");
+    partes.forEach(function(part) {
+        var claveValor = part.split("=");
+        parametros[claveValor[0]] = decodeURIComponent(claveValor[1]);
+    });
+    return parametros;
+}
+
+// Obtener parámetros de la URL
+var parametros = obtenerParametrosUrl();
+
+// Mostrar la información recibida
+document.getElementById("nombre").innerText = parametros.nombre;
+document.getElementById("email").innerText = parametros.email;
+document.getElementById("telefono").innerText = parametros.telefono;
+
+// Mostrar los gustos y porcentajes
+var contenedorGustosPorcentajes = document.getElementById("gustosPorcentajes");
+for (var clave in parametros) {
+    if (clave.startsWith("gusto")) {
+        var gusto = parametros[clave];
+        var porcentaje = parametros["porc" + clave.substr(5)]; // Obtener el porcentaje correspondiente
+        var parrafo = document.createElement("p");
+        parrafo.innerHTML = "<span class='gusto'>" + gusto + ":</span> <span class='porcentaje'>" + porcentaje + "</span>";
+        contenedorGustosPorcentajes.appendChild(parrafo);
+    }
+}
+</script>
+
+</body>
+</html>
