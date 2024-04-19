@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Información Recibida</title>
+<title>Resultado</title>
 <style>
     body {
         font-family: "Montserrat", sans-serif;
@@ -27,48 +27,80 @@
         color: #333;
         margin-bottom: 20px;
     }
-    .info {
-        text-align: left;
+    table {
+        width: 100%;
+        border-collapse: collapse;
         margin-bottom: 20px;
     }
-    .info p {
-        margin: 10px 0;
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        background-color: #f2f2f2;
     }
     .nombre {
         font-weight: bold;
     }
-    .email {
-        color: blue;
+    .caja-email {
+        background-color: blue;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
     }
-    .telefono {
-        color: aquamarine;
+    .caja-telefono {
+        background-color: aquamarine;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
     }
-    .gusto {
-        color: green;
+    .caja-gusto {
+        background-color: green;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
     }
-    .porcentaje {
-        color: red;
+    .caja-porcentaje {
+        background-color: red;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
     }
     .usuario {
-        width: 24px;
+        width: 60px;
+        height: auto;
         vertical-align: middle;
-        margin-right: 5px;
+        margin-right: 10px;
     }
 </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Información Recibida</h1>
-    <div class="info">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAVtJREFUSEvt1b9LHFEUxfHPNsFYJwga0ZDYSyoLjWIjdgoSQv6BoGUIqU0t+dHYpE0hNopiJQiCWotCutgFTGNqTUAzD97C+JjZmVW221cNM+ed773nXpiGDp9Gh/11AZUJl0X0GJ8xGx128A5/Kh0TQRGgFyd4nmh/4AX+tgMpArzGWonJHLbuC3iPlRKT8O1TC0Af3uBLU1PUwTw27tDBAA4xjLf4FjyKAD04xUgCCXMZw2UBPJgfYQg/MYHfZYDwPmzR17hF19lwtxHiyW/RB3zHAxxgMJq/zDo4bxVRnRkuZUWs4gwPszj64/N4s/JWgAUsYjoh7UXTTTzBftbBs6gJoCn8SqtLZxC2J0TR6ixns/sYISGaEOFkkXk6g1dYr5MPZrCLp/hXZp4CjjFaExDMA6Ty5CO6ihtReQkXeFRHmAfc1LmQ09T6l9QStQm+Je8CKtPreET/ARiyNRlauk5oAAAAAElFTkSuQmCC" alt="Imagen de Usuario" class="usuario">
-        <p><span class="nombre">Nombre:</span> <strong id="nombre"></strong></p>
-        <p><span class="email">Email:</span> <span id="email"></span></p>
-        <p><span class="telefono">Teléfono:</span> <span id="telefono"></span></p>
-    </div>
-    <div id="gustosPorcentajes" class="info">
-        <!-- Los gustos y porcentajes se mostrarán aquí -->
-    </div>
+    <h1>Resultado</h1>
+    <table>
+        <tr>
+            <th>Nombre</th>
+            <td class="nombre" id="nombre">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAVtJREFUSEvt1b9LHFEUxfHPNsFYJwga0ZDYSyoLjWIjdgoSQv6BoGUIqU0t+dHYpE0hNopiJQiCWotCutgFTGNqTUAzD97C+JjZmVW221cNM+ed773nXpiGDp9Gh/11AZUJl0X0GJ8xGx128A5/Kh0TQRGgFyd4nmh/4AX+tgMpArzGWonJHLbuC3iPlRKT8O1TC0Af3uBLU1PUwTw27tDBAA4xjLf4FjyKAD04xUgCCXMZw2UBPJgfYQg/MYHfZYDwPmzR17hF19lwtxHiyW/RB3zHAxxgMJq/zDo4bxVRnRkuZUWs4gwPszj64/N4s/JWgAUsYjoh7UXTTTzBftbBs6gJoCn8SqtLZxC2J0TR6ixns/sYISGaEOFkkXk6g1dYr5MPZrCLp/hXZp4CjjFaExDMA6Ty5CO6ihtReQkXeFRHmAfc1LmQ09T6l9QStQm+Je8CKtPreET/ARiyNRlauk5oAAAAAElFTkSuQmCC" alt="Imagen de Usuario" class="usuario">
+            </td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td id="email"><div class="caja-email"></div></td>
+        </tr>
+        <tr>
+            <th>Teléfono</th>
+            <td id="telefono"><div class="caja-telefono"></div></td>
+        </tr>
+        <tr>
+            <th colspan="2">Gustos y Porcentajes</th>
+        </tr>
+        <tbody id="gustosPorcentajes">
+            <!-- Los gustos y porcentajes se mostrarán aquí -->
+        </tbody>
+    </table>
 </div>
 
 <script>
@@ -89,8 +121,8 @@ var parametros = obtenerParametrosUrl();
 
 // Mostrar la información recibida
 document.getElementById("nombre").innerText = parametros.nombre;
-document.getElementById("email").innerText = parametros.email;
-document.getElementById("telefono").innerText = parametros.telefono;
+document.getElementById("email").innerHTML = "<div class='caja-email'>" + parametros.email + "</div>";
+document.getElementById("telefono").innerHTML = "<div class='caja-telefono'>" + parametros.telefono + "</div>";
 
 // Mostrar los gustos y porcentajes
 var contenedorGustosPorcentajes = document.getElementById("gustosPorcentajes");
@@ -98,12 +130,18 @@ for (var clave in parametros) {
     if (clave.startsWith("gusto")) {
         var gusto = parametros[clave];
         var porcentaje = parametros["porc" + clave.substr(5)]; // Obtener el porcentaje correspondiente
-        var parrafo = document.createElement("p");
-        parrafo.innerHTML = "<span class='gusto'>" + gusto + ":</span> <span class='porcentaje'>" + porcentaje + "</span>";
-        contenedorGustosPorcentajes.appendChild(parrafo);
+        var fila = document.createElement("tr");
+        var celdaGusto = document.createElement("td");
+        var celdaPorcentaje = document.createElement("td");
+        celdaGusto.innerHTML = "<div class='caja-gusto'>" + gusto + "</div>";
+        celdaPorcentaje.innerHTML = "<div class='caja-porcentaje'>" + porcentaje + "</div>";
+        fila.appendChild(celdaGusto);
+        fila.appendChild(celdaPorcentaje);
+        contenedorGustosPorcentajes.appendChild(fila);
     }
 }
 </script>
 
 </body>
 </html>
+
