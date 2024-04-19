@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tabla de Gustos</title>
+<title>Formulario de Afiliación</title>
 <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
@@ -167,19 +167,29 @@ function ocultarBotones() {
 }
 
 // Función para enviar la información y redirigir a la página de destino
+// Función para enviar la información y redirigir a la página de destino
 function enviarInformacion() {
     var nombre = document.getElementById("nombreCompleto").value;
     var email = document.getElementById("email").value;
     var telefono = document.getElementById("telefono").value;
 
-    // Construir los parámetros de los gustos y porcentajes
-    var parametrosGustos = "";
-    cambiosPendientes.forEach(function(cambio, index) {
-        parametrosGustos += "&gusto" + (index + 1) + "=" + encodeURIComponent(cambio.gusto);
-        parametrosGustos += "&porc" + (index + 1) + "=" + encodeURIComponent(cambio.inputPorcentaje.value);
+    // Obtener los gustos y porcentajes actualizados de la tabla
+    var gustosPorcentajes = [];
+    var filas = document.querySelectorAll("#tablaGustos tr:not(:first-child)");
+    filas.forEach(function(fila) {
+        var gusto = fila.cells[0].innerText;
+        var porcentaje = fila.cells[1].innerText.replace("%", "");
+        gustosPorcentajes.push({ gusto: gusto, porcentaje: porcentaje });
     });
 
-    // Construir la URL de redirección
+    // Construir los parámetros de los gustos y porcentajes en la URL
+    var parametrosGustos = "";
+    gustosPorcentajes.forEach(function(gustoPorcentaje, index) {
+        parametrosGustos += "&gusto" + (index + 1) + "=" + encodeURIComponent(gustoPorcentaje.gusto);
+        parametrosGustos += "&porc" + (index + 1) + "=" + encodeURIComponent(gustoPorcentaje.porcentaje);
+    });
+
+    // Construir la URL de redirección con los nuevos gustos
     var url = "recibido.html?nombre=" + encodeURIComponent(nombre) +
               "&email=" + encodeURIComponent(email) +
               "&telefono=" + encodeURIComponent(telefono) +
@@ -187,8 +197,9 @@ function enviarInformacion() {
 
     // Redirigir a la página de destino
     window.location.href = url;
-
 }
+
+
 </script>
 
 </body>
