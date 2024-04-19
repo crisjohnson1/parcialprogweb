@@ -4,78 +4,50 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tabla de Gustos</title>
-<style>
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
-    th {
-        background-color: #f2f2f2;
-    }
-    .editarBtn {
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        cursor: pointer;
-        border-radius: 4px;
-    }
-    .enEdicion {
-        background-color: #FFA500; 
-    }
-    .guardarBtn, .anularBtn {
-        display: none;
-    }
-    .confirmacion {
-        display: none;
-    }
-</style>
+<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
 
-<h2>Formulario de Afiliación</h2>
+<div class="container">
+    <h2>Formulario de Afiliación</h2>
 
-<form id="formularioAfiliacion">
-    <div>
-        <label for="nombreCompleto">Nombre Completo:</label>
-        <input type="text" id="nombreCompleto" name="nombreCompleto" required>
+    <form id="formularioAfiliacion">
+        <div>
+            <label for="nombreCompleto">Nombre Completo:</label>
+            <input type="text" id="nombreCompleto" name="nombreCompleto" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="telefono">Teléfono:</label>
+            <input type="tel" id="telefono" name="telefono" required>
+        </div>
+    </form>
+
+    <input type="text" id="gusto" placeholder="Ingrese un gusto">
+    <button onclick="agregarGusto()">Agregar Gusto</button>
+
+    <table id="tablaGustos">
+        <tr>
+            <th>Gusto</th>
+            <th>Porcentaje</th>
+            <th>Editar</th>
+        </tr>
+    </table>
+
+    <div class="confirmacion">
+        <p>Pulse: Aceptar para guardar los cambios o cancelar para anularlos</p>
     </div>
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-    </div>
-    <div>
-        <label for="telefono">Teléfono:</label>
-        <input type="tel" id="telefono" name="telefono" required>
-    </div>
-</form>
 
-<h2>Tabla de Gustos</h2>
-
-<input type="text" id="gusto" placeholder="Ingrese un gusto">
-<button onclick="agregarGusto()">Agregar Gusto</button>
-
-<table id="tablaGustos">
-    <tr>
-        <th>Gusto</th>
-        <th>Porcentaje</th>
-        <th>Editar</th>
-    </tr>
-</table>
-
-<div class="confirmacion">
-    <p>Pulse: Aceptar para guardar los cambios o cancelar para anularlos</p>
+    <button class="guardarBtn" onclick="guardarCambios()">Guardar Cambios</button>
+    <button class="anularBtn" onclick="anularCambios()">Anular Cambios</button>
 </div>
-
-<button class="guardarBtn" onclick="guardarCambios()">Guardar Cambios</button>
-<button class="anularBtn" onclick="anularCambios()">Anular Cambios</button>
 
 <script>
 var cambiosPendientes = [];
+var tablaEditada = false; // Variable para controlar si se ha editado la tabla
 
 function agregarGusto() {
     var gusto = document.getElementById("gusto").value;
@@ -97,7 +69,7 @@ function agregarGusto() {
     inputPorcentaje.min = "0";
     inputPorcentaje.max = "100";
     inputPorcentaje.placeholder = "0-100";
-    inputPorcentaje.style.width = "60px"; 
+    inputPorcentaje.style.width = "60px"; // Ancho del cuadro de texto
     celdaPorcentaje.appendChild(inputPorcentaje);
 
     var editarBtn = document.createElement("button");
@@ -108,7 +80,7 @@ function agregarGusto() {
     };
     celdaEditar.appendChild(editarBtn);
 
-
+    // Guardar cambios pendientes
     cambiosPendientes.push({fila: fila, gusto: gusto, inputPorcentaje: inputPorcentaje});
 }
 
@@ -124,62 +96,59 @@ function editarFila(fila) {
     inputPorcentaje.type = "number";
     inputPorcentaje.min = "0";
     inputPorcentaje.max = "100";
-    inputPorcentaje.style.width = "60px"; 
+    inputPorcentaje.style.width = "60px"; // Ancho del cuadro de texto
     inputPorcentaje.value = celdas[1].innerText.replace("%", "");
     celdas[1].innerHTML = "";
     celdas[1].appendChild(inputPorcentaje);
 
     var editarBtn = celdas[2].querySelector("button");
     editarBtn.innerHTML = "En edición";
-    editarBtn.classList.add("enEdicion"); 
-    editarBtn.disabled = true; 
+    editarBtn.classList.add("enEdicion"); // Agregar clase CSS para estilo
+    editarBtn.disabled = true; // Deshabilitar botón mientras esté en edición
 
     var guardarBtn = document.querySelector(".guardarBtn");
     var anularBtn = document.querySelector(".anularBtn");
-    guardarBtn.style.display = "inline-block";
-    anularBtn.style.display = "inline-block";
 
-    
+    // Mostrar los botones solo si se edita la tabla por primera vez
+    if (!tablaEditada) {
+        guardarBtn.style.display = "inline-block";
+        anularBtn.style.display = "inline-block";
+        tablaEditada = true; // Marcar que la tabla ha sido editada
+    }
+
+    // Mostrar el mensaje de confirmación
     document.querySelector(".confirmacion").style.display = "block";
 }
 
 function guardarCambios() {
-   
+    // Actualizar la tabla con los cambios realizados
     cambiosPendientes.forEach(function(cambio) {
         cambio.fila.cells[0].innerHTML = cambio.fila.cells[0].querySelector("input").value;
         var porcentaje = cambio.fila.cells[1].querySelector("input").value + "%";
         cambio.fila.cells[1].innerHTML = porcentaje;
     });
-    cambiosPendientes.forEach(function(cambio) {
-        var editarBtn = cambio.fila.cells[2].querySelector(".editarBtn");
-        editarBtn.innerHTML = "Editar";
-        editarBtn.classList.remove("enEdicion"); 
-        editarBtn.disabled = false;
-    });
     cambiosPendientes = [];
     ocultarBotones();
-   
-    document.querySelector(".confirmacion").style.display = "none";
+
+    // Cambiar el texto del botón de "En edición" a "Editar"
+    var botonesEditar = document.querySelectorAll(".enEdicion");
+    botonesEditar.forEach(function(boton) {
+        boton.innerHTML = "Editar";
+        boton.classList.remove("enEdicion");
+        boton.disabled = false; // Habilitar botón después de guardar cambios
+    });
 }
 
 function anularCambios() {
-   
+    // Restaurar los valores originales y mantener las ediciones realizadas
     cambiosPendientes.forEach(function(cambio) {
         var inputGusto = cambio.fila.cells[0].querySelector("input");
         var inputPorcentaje = cambio.fila.cells[1].querySelector("input");
         cambio.fila.cells[0].innerHTML = inputGusto ? inputGusto.value : cambio.gusto;
         cambio.fila.cells[1].innerHTML = inputPorcentaje ? inputPorcentaje.value + "%" : cambio.inputPorcentaje.value;
     });
-    cambiosPendientes.forEach(function(cambio) {
-        var editarBtn = cambio.fila.cells[2].querySelector(".editarBtn");
-        editarBtn.innerHTML = "Editar";
-        editarBtn.classList.remove("enEdicion"); 
-        editarBtn.disabled = false;
-    });
     cambiosPendientes = [];
     ocultarBotones();
- 
-    document.querySelector(".confirmacion").style.display = "none";
 }
 
 function ocultarBotones() {
@@ -187,7 +156,11 @@ function ocultarBotones() {
     var anularBtn = document.querySelector(".anularBtn");
     guardarBtn.style.display = "none";
     anularBtn.style.display = "none";
+
+    // Ocultar el mensaje de confirmación
+    document.querySelector(".confirmacion").style.display = "none";
 }
+
 </script>
 
 </body>
